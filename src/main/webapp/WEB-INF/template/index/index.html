@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>顽皮熊</title>
+
+		<link rel="stylesheet" type="text/css" href="${base}/css/bootstrap.min.css" />
+		<script src="${base}/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			#logo{
+				text-align: center;
+			}
+			#name{
+				text-align: center;
+			}
+			.process{
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12" id="logo">
+					<img src="${base}/img/logo.png"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12" id="name">
+					<h1>顽皮熊</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<button id="example" type="button" class="btn btn-primary btn-lg btn-block">情景实例</button>
+				</div>
+				<div class="col-md-4">
+					<button id="model" type="button" class="btn btn-primary btn-lg btn-block">业务原型</button>
+				</div>
+				<div class="col-md-4">
+					<button id="suggest" type="button" class="btn btn-primary btn-lg btn-block">吐槽建议</button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#example").click(function(){
+				document.location = "${base}/show/toExample";
+			});
+			
+			$("#model").click(function(){
+				document.location = "${base}/show/toModel";
+			});
+			
+			$("#suggest").click(function(){
+				document.location = "${base}/show/toSuggest";
+			});
+		});
+	</script>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Login</title>
+		
+		<style type="text/css">
+			#tip{
+				color: red;
+			}
+		</style>
+	</head>
+	<body>
+		用户名: <input type="text" name="username" id="username" value="" />
+		密码:   <input type="text" name="password" id="password" value="" />
+		<input id="submit" type="submit" value="登录"/>
+		
+		<span id="tip"></span>
+		
+		<script src="${base}/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$("#submit").click(function(){
+					var username = $("#username").val();
+					var password = $("#password").val();
+					
+					$.ajax({
+						type: "POST",
+						url: "${base}/login",
+						data: { "loginAccess.username":username, "loginAccess.password":password },
+						success: function(data){
+							if(data === "succ"){
+								document.location.href = ${base};
+							}else{
+								$("#tip").text("Username or password is error!");
+							}
+							
+						},
+						error: function(){
+							$("#tip").text("Server error!");					
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Document</title>
+	</head>
+
+	<body>
+	
+		<h1>Get Menu</h1>
+		<input type="button" name="publish_get" id="publish_get" value="Get Menu" />
+		<pre><span id="publish_get_tip"></span></pre>
+		
+		<h1>Publish Menu</h1>
+		<p>Model：</p>
+		<pre>
+			 {
+			     "button":[
+			     {	
+			          "type":"click",
+			          "name":"今日歌曲",
+			          "key":"V1001_TODAY_MUSIC"
+			      },
+			      {
+			           "name":"菜单",
+			           "sub_button":[
+			           {	
+			               "type":"view",
+			               "name":"搜索",
+			               "url":"http://www.soso.com/"
+			            },
+			            {
+			               "type":"view",
+			               "name":"视频",
+			               "url":"http://v.qq.com/"
+			            },
+			            {
+			               "type":"click",
+			               "name":"赞一下我们",
+			               "key":"V1001_GOOD"
+			            }]
+			       }]
+			 }
+		</pre>
+		<textarea rows="10" cols="100" id="menu_content"></textarea><br>
+		<input type="button" name="publish_menu" id="publish_menu" value="publish Menu" />
+		<span id="publish_menu_tip"></span>
+
+		<script src="${base}/js/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				
+				$("#publish_get").click(function(){
+					$.ajax({
+						type: "POST",
+						url: "${base}/config/getMenu",
+						success: function(data){
+							$("#publish_get_tip").text(data);
+						},
+						error: function(){
+							$("#publish_get_tip").text("Get menu is error...");						
+						}
+					});
+				});
+				
+				$("#publish_menu").click(function() {
+					var menu_content = $("#menu_content").val();
+					$.ajax({
+						type: "POST",
+						url: "${base}/config/createMenu",
+						data: "menu_content=" + menu_content,
+						success: function(data) {
+							$("#publish_menu_tip").text(data);
+						},
+						error: function(){
+							$("#publish_menu_tip").text("Publish menu is error...");						
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+
+</html>
