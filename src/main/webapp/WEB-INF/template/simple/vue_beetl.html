@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Vue</title>
+	</head>
+	<body>
+		<h1>Hi, ${user.name}</h1>
+		<h1>List size: ${list.~size}, list[0]: ${list[0]}, list[1]: ${list[1]}, list[2]: ${list[2]}</h1>
+		
+		<ul>
+			@for(entry in map){
+			<li>${entryLP.index} - ${entry.key}: ${entry.value}</li>
+			@};
+		</ul>
+		
+		<h1>Map  size: ${map.~size}, Map[a] = ${map["a"]}, Map[b] = ${map["b"]}, Map[c] = ${map["c"]},</h1>
+		
+		@ var lists = [];
+		@ for(list in lists){
+		<h6>${list}</h6>
+		@ }elsefor{
+		<h6>nothing!</h6>
+		@ };
+		
+		@ var flag = 2;
+		@ select{
+		@	case flag > 2:
+			<h6>aaaa</h6>
+		@   case flag <= 2:
+			<h6>bbbb</h6>
+		@ };
+		
+		@ try{
+		@	print(i);
+		@ }catch(error){
+			<h6>error la!</h6>
+		@ };
+		
+		@ var userJ = json(user);
+		<h6>${userJ}</h6>
+		
+		<h6>${lsdkjfl!user.age}</h6>
+		
+		@ var date = date();
+		<h6>${date,dateFormat="yyyy-MM-dd"}</h6>
+		
+		@ var hi = function(1,2,3);
+		<h6>${hi}</h6>
+		
+		@ logoPath = "###";
+		<h6>${logoPath}</h6>
+		
+		<div id="app">
+			<p>{{ message }}</p>
+			<input type="text" v-model="message" />
+		</div>
+		
+		<script src="${base}/js/vue.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data:{
+					message: 'Hello Vue.js!'
+				}
+			})
+		</script>
+	</body>
+</html>

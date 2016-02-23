@@ -1,32 +1,57 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
+
 	<head>
-		<meta charset="UTF-8">
+		<meta charset="UTF-8" />
 		<title>Vue</title>
 	</head>
+
 	<body>
-		
-		@ var htmlPart = {
-			<p>This is html part!</p>
-		@ };
-		
-		@ include("layout.html",{htmlSection:htmlPart}){};
-		
-		<h1>Hi, ${user.name}</h1>
-		
 		<div id="app">
-			<p>{{ message }}</p>
-			<input type="text" v-model="message" />
+			<input type="text" v-model="newTodo" v-on:keyup.enter="addTodo" />
+			<ul>
+				<li v-for="todo in todos">
+					<span>{{ todo.text }}</span>
+					<button v-on:click="removeTodo($index)">X</button>
+				</li>
+			</ul>
 		</div>
-		
-		<script src="${base}/js/vue.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript">
-			new Vue({
-				el: '#app',
-				data:{
-					message: 'Hello Vue.js!'
-				}
-			})
-		</script>
 	</body>
+
+	<script src="${base}/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="${base}/js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	
+		$(document).ready(function() {
+			
+			var todos = [
+				@for (list in lists) {
+					{ text: '${list}' },
+				@}
+			];
+
+			window.vue = new Vue({
+						el:'#app',
+				data: {
+					newTodo: '',
+					todos: todos
+				},
+				methods: {
+					addTodo: function(){
+						var _text = this.newTodo.trim();
+						this.todos.push({ text: _text });
+						this.newTodo = '';
+					},
+					removeTodo: function(index){
+						this.todos.splice(index, 1);
+					}
+				}
+			});
+			
+			window.vue.$watch("newTodo", function(){
+				console.log("aaaaaaaa");
+			});
+		});
+	</script>
+
 </html>

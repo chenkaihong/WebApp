@@ -1,5 +1,7 @@
 package com.bear.common;
 
+import java.util.Map;
+
 import org.beetl.ext.jfinal.BeetlRenderFactory;
 
 import com.bear.index.IndexController;
@@ -9,6 +11,7 @@ import com.bear.simple.SimpleController;
 import com.bear.wx.ConfigController;
 import com.bear.wx.HandleController;
 import com.bear.wx.PayController;
+import com.google.common.collect.Maps;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Handlers;
 import com.jfinal.config.Interceptors;
@@ -34,6 +37,7 @@ public class Config extends JFinalConfig {
 		me.setDevMode(PropKit.getBoolean("devMode", false));
 		// beetl渲染
 		me.setMainRenderFactory(new BeetlRenderFactory());
+		BeetlRenderFactory.groupTemplate.setSharedVars(Constant.viewConstantMap);
 		
 		me.setError404View("/404.html");
         me.setError500View("/500.html");

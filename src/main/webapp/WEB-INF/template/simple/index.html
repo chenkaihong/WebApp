@@ -1,0 +1,29 @@
+@ var title = {
+	Simple
+@ };
+
+@ var css = {
+	
+@ };
+
+@ var content = {
+	<div class="row">
+		<div class="col-lg-4">
+			<h1>page1</h1>
+		</div>
+		<div class="col-lg-4">
+			<h1>page2</h1>
+		</div>
+		<div class="col-lg-4">
+			<h1>${logoPath}</h1>
+		</div>
+	</div>
+@ };
+
+@ var script = {
+	<script type="text/javascript">
+		document.activeElement();
+	</script>
+@ };
+
+@ layout("layout.html",{jsTitle:title, jsContent:content, jsScript:script, jsCss:css}){};
