@@ -14,7 +14,7 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 public class _JFinalDemoGenerator {
 	
 	public static DataSource getDataSource() {
-		PropKit.use("a_little_config.txt");
+		PropKit.use("config.properties");
 		C3p0Plugin c3p0Plugin = Config.createC3p0Plugin();
 		c3p0Plugin.start();
 		return c3p0Plugin.getDataSource();
@@ -24,7 +24,7 @@ public class _JFinalDemoGenerator {
 		// base model 所使用的包名
 		String baseModelPackageName = "com.bear.common.model.base";
 		// base model 文件保存路径
-		String baseModelOutputDir = PathKit.getWebRootPath() + "/../src/com/bear/common/model/base";
+		String baseModelOutputDir = PathKit.getWebRootPath() + "/src/main/java/com/bear/common/model/base";
 		
 		// model 所使用的包名 (MappingKit 默认使用的包名)
 		String modelPackageName = "com.bear.common.model";

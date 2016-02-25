@@ -4,53 +4,88 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Vue</title>
+		
+		<link rel="stylesheet" type="text/css" href="${base}/css/bootstrap.min.css"/>
 	</head>
 
 	<body>
 		<div id="app">
-			<input type="text" v-model="newTodo" v-on:keyup.enter="addTodo" />
-			<ul>
-				<li v-for="todo in todos">
-					<span>{{ todo.text }}</span>
-					<button v-on:click="removeTodo($index)">X</button>
-				</li>
-			</ul>
+			
+			<template id="my-child1">
+				<ul>
+					<li v-for="list in lists">
+						<span>{{ list }}</span>
+					</li>
+				</ul>
+			</template>
+			<template id="my-child2">
+				<h1>child_2</h1>
+			</template>
+			
+			<component :is="view" keep-alive :lists="list"></component>
 		</div>
 	</body>
 
 	<script src="${base}/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="${base}/js/vue.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
-	
+		
 		$(document).ready(function() {
-			
-			var todos = [
-				@for (list in lists) {
-					{ text: '${list}' },
-				@}
-			];
-
 			window.vue = new Vue({
-						el:'#app',
+				el: '#app',
 				data: {
-					newTodo: '',
-					todos: todos
+					view: 'child1',
+					list: [1,2,3,4,5,6]
 				},
 				methods: {
-					addTodo: function(){
-						var _text = this.newTodo.trim();
-						this.todos.push({ text: _text });
-						this.newTodo = '';
+					handle: function(msg){
+						this.messages.push(msg);
+					}
+				},
+				components: {
+					child1: {
+						template: '#my-child1',
+						props: ['lists'],
+						activate: function(done){
+							console.log("child1 change!");
+							done();
+						}
 					},
-					removeTodo: function(index){
-						this.todos.splice(index, 1);
+					child2: {
+						template: '#my-child2',
+						activate: function(done){
+							console.log("child2 change!");
+							done();
+						}
 					}
 				}
 			});
 			
-			window.vue.$watch("newTodo", function(){
-				console.log("aaaaaaaa");
+			var user = new Object();
+			user.id = 1;
+			user.name = "Jack";
+			user.age = 18;
+			
+			ajax("simple/toJson", JSON.stringify(user), function(data){
+				console.log(data);
+			},
+			function(){
+				console.log("error!");
 			});
+			
+			function ajax(_url, _data, _succF, _errorF){
+				$.ajax({
+					type:"POST",
+					url:_url,
+					cache: false,
+					async:true,
+					dataType: "json",
+					"contentType": "application/json",
+					data: _data,
+					success: _succF,
+					error: _errorF,
+				});
+			}
 		});
 	</script>
 

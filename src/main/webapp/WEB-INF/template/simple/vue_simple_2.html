@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8" />
+		<title>Vue</title>
+		
+		<link rel="stylesheet" type="text/css" href="${base}/css/bootstrap.min.css"/>
+		<style type="text/css">
+			.red{
+				color: red;
+			}
+			.green{
+				color: green;
+			}
+			.yellow{
+				color: yellow;
+			}
+			.black{
+				color: black;
+			}
+			.blue{
+				color: blue;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+		<div class="container">
+			<div class="row">
+				<template v-if="show_left_menu">
+					<div class="col-lg-3">
+						@include("leftMenu.html"){};
+					</div>
+				</template>
+				<div class="col-lg-9">
+					<input type="text" v-model="newTodo" v-on:keyup.enter="addTodo" debounce="500"/>
+					<ul>
+						<li v-for="(index, todo) in todos">
+							<span>{{ index }}: {{ todo.text }}</span>
+							<button v-on:click="removeTodo($index)">X</button>
+						</li>
+					</ul>
+					
+					<div id="item-{{ newTodo }}"></div>
+					
+					<h6>if: {{ newTodo == "open"? 'OPEN' : 'CLOSE' }}</h6>
+					<h6>str: {{ newTodo.split(',').join(' ') }}</h6>
+					<h6>filter: {{ newTodo | plusWords }}</h6>
+					<h6>computed: <input type="text" v-model="fullname" /></h6>
+					<h6>json: {{ user | json 4 }}</h6>
+					<a v-bind:href="newTodo">Go!</a>
+					<h1 v-bind:class="words_style" v-on:click="changeColor()">Color</h1>
+					
+					<h6>{{ arrays_orderby }}</h6>
+					<input type="text" v-model="select" />
+					<ul>
+						<li v-for="city in citys | filterBy select in 'name'">
+							<span>{{ city.name }}</span>
+						</li>
+					</ul>
+					
+					<form v-on:submit.prevent action="#" method="post">
+						<input type="submit" value="Submit"/>
+					</form>
+					
+					<input type="text" v-on:keyup.a="printful()" placeholder="edit me!"/>
+					
+					<hr />
+					<form v-on:submit.prevent action="#" method="post">
+						text: <input id = "text" type="text" v-model="form_text" /><label for="text">{{ form_text }}</label><br />
+						checkbox: <input type="checkbox" v-model="form_check" id="check" value="jjj" /><label for="check">{{ form_check }}</label><br />
+						
+						<input type="checkbox" v-model="for_check_names" id="Jack" value="Jack" /><label for="Jack">Jack</label>
+						<input type="checkbox" v-model="for_check_names" id="Tim" value="Tim" /><label for="Tim">Tim</label>
+						<input type="checkbox" v-model="for_check_names" id="Tom" value="Tom" /><label for="Tom">Tom</label><br />
+						<span>{{ for_check_names | json }}</span><br />
+						<input type="submit" value="Submit"/>
+					</form>
+				</div>
+			</div>
+		</div>
+		</div>
+		
+	</body>
+
+	<script src="${base}/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="${base}/js/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	
+		$(document).ready(function() {
+			
+			var color_index = 1;
+			var color_box = ['red','green','yellow','black','blue'];
+			
+			var todos = [
+				@ for (list in lists) {
+					{ text: '${list}' },
+				@ }
+			];
+			
+			var citys = [
+				@ for(city in citys){
+					{ name: '${city}' },
+				@ }
+			];
+			
+			window.vue = new Vue({
+				el:'#app',
+				data: {
+					menu: 'Menu',
+					newTodo: '',
+					todos: todos,
+					user: {
+						name: '${ user.name }',
+						age: '${ user.age }'
+					},
+					words_style: color_box[0],
+					show_left_menu: true,
+					citys: citys,
+					arrays: [5,4,3,2,1],
+					form_text: '',
+					form_check: 'true',
+					for_check_names: []
+				},
+				methods: {
+					addTodo: function(){
+						var _text = this.newTodo.trim();
+						this.todos.push({ text: _text });
+						this.newTodo = '';
+					},
+					removeTodo: function(index){
+						this.todos.splice(index, 1);
+					},
+					changeColor: changeColor,
+					printful: function(value){
+						console.log(value + "bbbbbb");
+					}
+				},
+				computed: {
+					fullname: {
+						get: function(){
+							return this.newTodo + "########";
+						},
+						set: function(value){
+							console.log(value);
+						}
+					},
+					arrays_orderby: function(){
+						return [5,4,3,2,1].sort();
+					}
+				},
+				
+				created: function(){
+					console.log('Creating...');
+				},
+				compiled: function(){
+					console.log("Compiled...")
+				},
+				ready: function(){
+					console.log("Ready...")
+				},
+				destroyed: function(){
+					console.log("Destroyed...")
+				}
+			});
+			
+			window.vue.$watch("newTodo", function(){
+				console.log("aaaaaaaa");
+			});
+			
+			Vue.filter('plusWords', function(value){
+				return value + " ----";
+			})
+			
+			setInterval(function(){
+				changeColor();
+			}, 1000);
+			function changeColor(){
+				color_index++;
+				var next_index = color_index%color_box.length;
+				window.vue.words_style = color_box[next_index];
+			}
+			
+			window.vue.todos.$set(0, { text: 'f' })
+		});
+	</script>
+
+</html>
